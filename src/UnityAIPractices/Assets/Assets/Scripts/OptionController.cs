@@ -19,6 +19,7 @@ public class OptionController : MonoBehaviour
         Ref = GetComponent<Image>();
         GetComponent<Button>().targetGraphic = Ref;
         CurrentOption = BoardOption.NO_VAL;
+        Ref.sprite = Options[(int)BoardOption.NO_VAL];
         valid = false;
 	}
 	
@@ -26,7 +27,7 @@ public class OptionController : MonoBehaviour
 	void Update ()
     {
 
-        if (valid) return;
+ /*       if (valid) return;
 
         switch (CurrentOption) {
 
@@ -51,12 +52,16 @@ public class OptionController : MonoBehaviour
             
             default:
                 break;
-        }
+        }*/
 
 	}
 
     public void ChangeOption(BoardOption opt)
     {
         if(CurrentOption == BoardOption.NO_VAL) CurrentOption = opt;
+        Ref.sprite = Options[(int)opt];
+        CurrentOption = opt;
+        GetComponent<Button>().enabled = false;
+        valid = false;
     }
 }

@@ -21,7 +21,11 @@ namespace Models
         {
             List<BoardOption> emptyRow = new List<BoardOption>(3);
             BoardData = new List<List<BoardOption>>(3);
-            for(int y = 0; y < 3; y++) {
+            for (int y = 0; y < 3; y++)
+            {
+                emptyRow.Add(BoardOption.NO_VAL);
+            }
+            for (int y = 0; y < 3; y++) {
             
                 BoardData.Add(emptyRow);
             }
@@ -29,11 +33,16 @@ namespace Models
 
         public bool PlaceMove(int x, int y, BoardOption opt)
         {
-            List<BoardOption> temp = BoardData[y];
-
-            if(temp[x] == BoardOption.NO_VAL) {
+            List<BoardOption> temp = new List<BoardOption>();
+            temp = BoardData[y];
+            Debug.Log("Model Cord:" + x + ", " + y);
+            if (temp[x] == BoardOption.NO_VAL) {
                 temp[x] = opt;
                 BoardData[y] = temp;
+                printRowDebug(temp);
+                printBoardDebug();
+                
+                
                 return true;
             }
            
@@ -52,6 +61,36 @@ namespace Models
             if (checkForEmpty() == GameState.GAMEOVER) return GameOver.TIE;
 
             return GameOver.IDLE;
+        }
+
+        private void printBoardDebug()
+        {
+            foreach (List<BoardOption> t in BoardData)
+            {
+                List<string> r = new List<string>();
+                foreach (BoardOption g in t)
+                {
+                    int q = (int)g;
+                    r.Add(q.ToString());
+                }
+
+                string s = string.Join("\t", r.ToArray());
+                Debug.Log(s + "\n");
+            }
+        }
+        private void printRowDebug(List<BoardOption> row)
+        {
+
+                List<string> r = new List<string>();
+                foreach (BoardOption g in row)
+                {
+                    int q = (int)g;
+                    r.Add(q.ToString());
+                }
+
+                string s = string.Join("\t", r.ToArray());
+                Debug.Log(s + "\n");
+          
         }
 
         private BoardOption getBoardValue(int x, int y)
@@ -134,7 +173,8 @@ namespace Models
 
             for (int i = 0; i < 3; i++)
             {
-                if(BoardData[i].BinarySearch(BoardOption.NO_VAL) > 0)
+
+                if(BoardData[i].Exists(x=> x== BoardOption.NO_VAL))
                 {
                     return GameState.IN_PROGRESS;
                 }
