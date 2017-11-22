@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour
     }
 	private void ModifyOptionView(int x,int y,BoardOption opt)
     {
-        GridRef[y,x].GetComponent<OptionController>().ChangeOption(opt);
+        GridRef[x,y].GetComponent<OptionController>().ChangeOption(opt);
 
     }
 	// Update is called once per frame
