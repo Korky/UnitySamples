@@ -18,6 +18,7 @@ namespace Models
         public BoardOption[,] BoardData;
         private PlayerIndex currentPlayer;
 
+        //public
         public void Init()
         {
             currentPlayer = PlayerIndex.PLAYER1;
@@ -76,23 +77,7 @@ namespace Models
             return GameOver.IDLE;
         }
 
-        private void printBoardDebug()
-        {
-            string[] p = new string[3];
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 0; x < 3; x++)
-                {
-                    int t = (int)BoardData[y, x];
-                    p[x] = t.ToString();
-
-                }
-                Debug.Log(string.Join("\t", p)+"\n");
-            }
-
-        }
-        
-
+        //private
         private BoardOption getBoardValue(int x, int y)
         {
             return BoardData[y,x];
@@ -116,6 +101,21 @@ namespace Models
             return GameState.GAMEOVER;
         }
 
+        private void printBoardDebug()
+        {
+            string[] p = new string[3];
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    int t = (int)BoardData[x, y];
+                    p[x] = t.ToString();
+
+                }
+                Debug.Log(string.Join("\t", p)+"\n");
+            }
+
+        }
     }
 
 }

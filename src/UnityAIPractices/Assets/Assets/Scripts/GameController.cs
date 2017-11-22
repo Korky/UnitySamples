@@ -38,9 +38,6 @@ public class GameController : MonoBehaviour
         GridRef[2, 0] = Row3[0];
         GridRef[2, 1] = Row3[1];
         GridRef[2, 2] = Row3[2];
-        BoardViewRef.Add(Row1);
-        BoardViewRef.Add(Row2);
-        BoardViewRef.Add(Row3);
 
         //set up players [temporary]
         Player p1 = new Player();
@@ -72,10 +69,11 @@ public class GameController : MonoBehaviour
     public void ClickOption(string cord)
     {
         int x, y;
-
         x = int.Parse(cord[0].ToString());
         y = int.Parse(cord[1].ToString());
         Debug.Log("UI Clicked Cord:" + x + ", " + y);
+
+
         if (currentPlayer == PlayerIndex.PLAYER1)
         {
             if (GameBoard.PlaceMove(x, y, BoardOption.X))
