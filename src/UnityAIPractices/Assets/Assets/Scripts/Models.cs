@@ -16,9 +16,12 @@ namespace Models
     public class Board
     {
         public BoardOption[,] BoardData;
+        private PlayerIndex currentPlayer;
 
         public void Init()
         {
+            currentPlayer = PlayerIndex.PLAYER1;
+
             BoardData = new BoardOption[3, 3];
             for (int y = 0; y < 3; y++)
             {
@@ -38,6 +41,7 @@ namespace Models
             Debug.Log("Model Cord:" + x + ", " + y);
             if (BoardData[y,x] == BoardOption.NO_VAL) {
                 BoardData[y, x] = opt;
+                currentPlayer = (opt == BoardOption.X)? PlayerIndex.PLAYER1:PlayerIndex.PLAYER2;
                 printBoardDebug();
                 
                 
@@ -49,12 +53,23 @@ namespace Models
 
         public GameOver CheckGameOver()
         {
-            GameOver ret;
-            ret = checkAllRows();
-            if (ret != GameOver.IDLE) return ret;
+            BoardOption temp;
+            temp =(currentPlayer == PlayerIndex.PLAYER1)?BoardOption.X:BoardOption.O;
             
-            ret = checkAllDiagonals();
-            if (ret != GameOver.IDLE) return ret;
+            //check rows
+            if (getBoardValue(0, 0) == temp && getBoardValue(0, 1) == temp && getBoardValue(0, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(1, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(1, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(2, 0) == temp && getBoardValue(2, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+
+            //check colums
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 0) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 1) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 1) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 2) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+
+            //check diagonals
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+
 
             if (checkForEmpty() == GameState.GAMEOVER) return GameOver.TIE;
 
@@ -72,24 +87,11 @@ namespace Models
                     p[x] = t.ToString();
 
                 }
-                Debug.Log(string.Join(",", p)+"\n");
+                Debug.Log(string.Join("\t", p)+"\n");
             }
 
         }
-        private void printRowDebug(List<BoardOption> row)
-        {
-
-                List<string> r = new List<string>();
-                foreach (BoardOption g in row)
-                {
-                    int q = (int)g;
-                    r.Add(q.ToString());
-                }
-
-                string s = string.Join("\t", r.ToArray());
-                Debug.Log(s + "\n");
-          
-        }
+        
 
         private BoardOption getBoardValue(int x, int y)
         {

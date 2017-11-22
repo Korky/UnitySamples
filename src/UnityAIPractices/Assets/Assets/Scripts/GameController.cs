@@ -1,6 +1,7 @@
 ﻿//System Libraries
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,6 +15,8 @@ public class GameController : MonoBehaviour
     public Image[] Row1 = new Image[3];
     public Image[] Row2 = new Image[3];
     public Image[] Row3 = new Image[3];
+
+    public Image[,] GridRef = new Image[3, 3];
     //views ref
     private ArrayList BoardViewRef = new ArrayList(3);
     
@@ -26,7 +29,15 @@ public class GameController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-
+        GridRef[0, 0] = Row1[0];
+        GridRef[0, 1] = Row1[1];
+        GridRef[0, 2] = Row1[2];
+        GridRef[1, 0] = Row2[0];
+        GridRef[1, 1] = Row2[1];
+        GridRef[1, 2] = Row2[2];
+        GridRef[2, 0] = Row3[0];
+        GridRef[2, 1] = Row3[1];
+        GridRef[2, 2] = Row3[2];
         BoardViewRef.Add(Row1);
         BoardViewRef.Add(Row2);
         BoardViewRef.Add(Row3);
@@ -49,9 +60,7 @@ public class GameController : MonoBehaviour
     }
 	private void ModifyOptionView(int x,int y,BoardOption opt)
     {
-        Image[] temp = new Image[3];
-        temp = (Image[])BoardViewRef[x];
-        temp[y].GetComponent<OptionController>().ChangeOption(opt);
+        GridRef[y,x].GetComponent<OptionController>().ChangeOption(opt);
 
     }
 	// Update is called once per frame
