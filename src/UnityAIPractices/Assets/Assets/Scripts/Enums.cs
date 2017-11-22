@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace Enums
+﻿namespace Enums
 {
     public enum PlayerIndex
     {

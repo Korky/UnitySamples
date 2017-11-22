@@ -1,7 +1,5 @@
 ﻿//System libraries
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
 //Custom libraries
@@ -143,29 +141,6 @@ namespace Models
             }
 
             return GameState.GAMEOVER;
-        }
-
-    }
-    public class Game
-    {
-        public List<Player> Players = new List<Player>(2);
-
-        private GameState CurrentGameState;
-        private PlayerIndex currentPlayer;
-        private Board GameBoard;
-
-        public void Init()
-        {
-            //start Game Init
-            CurrentGameState = GameState.INIT;
-            GameBoard.Init();
-            currentPlayer = PlayerIndex.PLAYER1;
-
-            //finish Game Init
-            if (Players[0].Type != PlayerType.NULL && Players[1].Type != PlayerType.NULL)
-                CurrentGameState = GameState.IN_PROGRESS;
-            else
-                Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class");
         }
 
     }
