@@ -15,31 +15,29 @@ namespace Models
     }
     public class Board
     {
-        public List<List<BoardOption>> BoardData;
+        public BoardOption[,] BoardData;
 
         public void Init()
         {
-            List<BoardOption> emptyRow = new List<BoardOption>(3);
-            BoardData = new List<List<BoardOption>>(3);
+            BoardData = new BoardOption[3, 3];
             for (int y = 0; y < 3; y++)
             {
-                emptyRow.Add(BoardOption.NO_VAL);
+                for (int x = 0; x < 3; x++)
+                {
+                    BoardData[y, x] = BoardOption.NO_VAL;
+                    
+                }
+              
             }
-            for (int y = 0; y < 3; y++) {
             
-                BoardData.Add(emptyRow);
-            }
         }
 
         public bool PlaceMove(int x, int y, BoardOption opt)
         {
-            List<BoardOption> temp = new List<BoardOption>();
-            temp = BoardData[y];
+            
             Debug.Log("Model Cord:" + x + ", " + y);
-            if (temp[x] == BoardOption.NO_VAL) {
-                temp[x] = opt;
-                BoardData[y] = temp;
-                printRowDebug(temp);
+            if (BoardData[y,x] == BoardOption.NO_VAL) {
+                BoardData[y, x] = opt;
                 printBoardDebug();
                 
                 
@@ -65,18 +63,18 @@ namespace Models
 
         private void printBoardDebug()
         {
-            foreach (List<BoardOption> t in BoardData)
+            string[] p = new string[3];
+            for (int y = 0; y < 3; y++)
             {
-                List<string> r = new List<string>();
-                foreach (BoardOption g in t)
+                for (int x = 0; x < 3; x++)
                 {
-                    int q = (int)g;
-                    r.Add(q.ToString());
-                }
+                    int t = (int)BoardData[y, x];
+                    p[x] = t.ToString();
 
-                string s = string.Join("\t", r.ToArray());
-                Debug.Log(s + "\n");
+                }
+                Debug.Log(string.Join(",", p)+"\n");
             }
+
         }
         private void printRowDebug(List<BoardOption> row)
         {
@@ -95,8 +93,7 @@ namespace Models
 
         private BoardOption getBoardValue(int x, int y)
         {
-            List<BoardOption> temp = BoardData[y];
-            return temp[x];
+            return BoardData[y,x];
         }
 
         private GameOver checkAllRows()
@@ -171,13 +168,16 @@ namespace Models
         private GameState checkForEmpty()
         {
 
-            for (int i = 0; i < 3; i++)
+            for (int y = 0; y < 3; y++)
             {
-
-                if(BoardData[i].Exists(x=> x== BoardOption.NO_VAL))
+                for(int x = 0; x < 3; x++)
                 {
-                    return GameState.IN_PROGRESS;
+                    if(BoardData[y,x] == BoardOption.NO_VAL)
+                    {
+                        return GameState.IN_PROGRESS;
+                    }
                 }
+                
             }
 
             return GameState.GAMEOVER;
