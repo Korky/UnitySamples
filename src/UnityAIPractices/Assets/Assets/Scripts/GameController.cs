@@ -16,22 +16,22 @@ public class GameController : MonoBehaviour
     public Canvas[] MenuFlow = new Canvas[4]; 
 
     //models
-    public List<Player> Players = new List<Player>(2);
+    private List<Player> Players = new List<Player>(2);
     private Player currentPlayer;
     private Board GameBoard;
     private int currentMenuIndex;
-    
 
+    //utils
+    private Player p1, p2;
 
 
     // Overrides
     void Awake()
     {
-
+        p1 = new Player();
+        p2 = new Player();
+        currentPlayer = new Player();
         currentMenuIndex = 0;
-
-        Players.Add(new Player());
-        Players.Add(new Player());
 
     }
 	void Start ()
@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
         {
             ModifyOptionView(x, y, currentPlayer.Icon);            
         }
-        currentPlayer = (currentPlayer.Index == PlayerIndex.PLAYER1) ? Players[1] : Players[2];
+        currentPlayer = (currentPlayer.Index == PlayerIndex.PLAYER1) ? Players[1] : Players[0];
 
 
         GameOver checker = GameBoard.CheckGameOver();
@@ -79,36 +79,38 @@ public class GameController : MonoBehaviour
 
     public void ClickMenuOption(string opt)
     {
+        
+        
         switch (opt)
         {
             case "PVP":
-                Players[0].Type = PlayerType.HUMAN;
-                Players[1].Type = PlayerType.HUMAN;
+                p1.Type = PlayerType.HUMAN;
+                p2.Type = PlayerType.HUMAN;
                 ChangeMenu();
                 break;
             case "PVE":
-                Players[0].Type = PlayerType.HUMAN;
-                Players[1].Type = PlayerType.AI;
+                p1.Type = PlayerType.HUMAN;
+                p2.Type = PlayerType.AI;
                 ChangeMenu();
                 break;
             case "EVE":
-                Players[0].Type = PlayerType.AI;
-                Players[1].Type = PlayerType.AI;
+                p1.Type = PlayerType.AI;
+                p2.Type = PlayerType.AI;
                 ChangeMenu();
                 break;
             case "X":
-                Players[0].Icon = BoardOption.X;
-                Players[0].Index = PlayerIndex.PLAYER1;
-                Players[1].Icon = BoardOption.O;
-                Players[1].Index = PlayerIndex.PLAYER2;
-                ChangeMenu();
+                p1.Icon = BoardOption.X;
+                p1.Index = PlayerIndex.PLAYER1;
+                p2.Icon = BoardOption.O;
+                p2.Index = PlayerIndex.PLAYER2;
+                GameSetup(p1, p2);
                 break;
             case "O":
-                Players[1].Icon = BoardOption.X;
-                Players[1].Index = PlayerIndex.PLAYER1;
-                Players[0].Icon = BoardOption.O;
-                Players[0].Index = PlayerIndex.PLAYER2;
-                ChangeMenu();
+                p2.Icon = BoardOption.X;
+                p2.Index = PlayerIndex.PLAYER1;
+                p1.Icon = BoardOption.O;
+                p1.Index = PlayerIndex.PLAYER2;
+                GameSetup(p1, p2);
                 break;
             default:
                 break;
@@ -143,7 +145,7 @@ public class GameController : MonoBehaviour
 
     private void GameEnd(GameOver winner)
     {
-
+        ChangeMenu();
     }
 
     private void GameInit()
@@ -159,7 +161,7 @@ public class GameController : MonoBehaviour
         else
             Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class");
 
-            
 
+        ChangeMenu();
     }
 }

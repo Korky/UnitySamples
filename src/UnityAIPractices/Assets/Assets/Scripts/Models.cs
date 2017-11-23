@@ -117,5 +117,9 @@ namespace Models
 
         }
     }
-
+    public struct Move
+    {
+        int x,y;
+        double score;
+    }
 }
