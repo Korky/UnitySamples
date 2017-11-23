@@ -1,6 +1,5 @@
 ﻿//System libraries
 using UnityEngine;
-using System.Collections.Generic;
 
 //Custom libraries
 using Enums;
@@ -12,6 +11,7 @@ namespace Models
     {
         public PlayerIndex Index;
         public PlayerType Type;
+        public BoardOption Icon;
     }
     public class Board
     {

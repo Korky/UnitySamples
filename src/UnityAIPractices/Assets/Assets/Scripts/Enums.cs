@@ -1,5 +1,12 @@
 ﻿namespace Enums
 {
+    public enum MenuFlows
+    {
+        GAME_MODE = 0,
+        ICON_SELECT,
+        GAME_BOARD,
+        GAME_OVER
+    }
     public enum PlayerIndex
     {
         PLAYER1 = 0,
