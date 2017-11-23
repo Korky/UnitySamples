@@ -30,7 +30,6 @@ public class GameController : MonoBehaviour
     {
         p1 = new Player();
         p2 = new Player();
-        currentPlayer = new Player();
         currentMenuIndex = 0;
 
     }
@@ -112,6 +111,11 @@ public class GameController : MonoBehaviour
                 p1.Index = PlayerIndex.PLAYER2;
                 GameSetup(p1, p2);
                 break;
+            case "RETRY":
+                p1 = new Player();
+                p2 = new Player();
+                ChangeMenu();
+                break;
             default:
                 break;
         }
@@ -122,7 +126,7 @@ public class GameController : MonoBehaviour
     {
         MenuFlow[currentMenuIndex++].gameObject.SetActive(false);
 
-        if (currentMenuIndex > 4) currentMenuIndex = 0;
+        if (currentMenuIndex > 3) currentMenuIndex = 0;
         
         MenuFlow[currentMenuIndex].gameObject.SetActive(true);
 
@@ -138,13 +142,24 @@ public class GameController : MonoBehaviour
     {
         Players.Add(p1);
         Players.Add(p2);
-
+        //MenuFlow[currentMenuIndex+1].enabled = true;
+        currentPlayer = new Player();
         //Initialiaze Game
         GameInit();
     }
 
+    private void ClearView()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            GUIRef[i].GetComponent<OptionController>().Init();
+        }
+    }
+
     private void GameEnd(GameOver winner)
     {
+        //MenuFlow[currentMenuIndex].enabled = false;
+        ClearView();
         ChangeMenu();
     }
 

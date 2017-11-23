@@ -16,10 +16,14 @@ public class OptionController : MonoBehaviour
     {
         Ref = GetComponent<Image>();
         GetComponent<Button>().targetGraphic = Ref;
+        Init();
+	}
+    public void Init()
+    {
         CurrentOption = BoardOption.NO_VAL;
         Ref.sprite = Options[(int)BoardOption.NO_VAL];
-	}
-	
+        GetComponent<Button>().enabled = true;
+    }
     public void ChangeOption(BoardOption opt)
     {
         if(CurrentOption == BoardOption.NO_VAL) CurrentOption = opt;
