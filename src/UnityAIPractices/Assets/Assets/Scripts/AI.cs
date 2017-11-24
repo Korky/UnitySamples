@@ -47,6 +47,17 @@ namespace AI {
                     return new Move(-10);
                 }
             }
+            else if (cond == GameOver.P2)
+            {
+                if (ai.Index == PlayerIndex.PLAYER2)
+                {
+                    return new Move(10);
+                }
+                else
+                {
+                    return new Move(-10);
+                }
+            }
             else if(cond == GameOver.TIE){
                 return new Move(0);
             }

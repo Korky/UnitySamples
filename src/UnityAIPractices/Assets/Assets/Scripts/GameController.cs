@@ -27,8 +27,6 @@ public class GameController : MonoBehaviour
     //utils
     private GameState currentGameState;
     private MinimaxAI AI;
-    private bool isAIWorking = false;
-
 
     // Overrides
     void Awake()
@@ -70,11 +68,7 @@ public class GameController : MonoBehaviour
             CurrentPlayerText.text = "Player 2 - " + des;
         }
 
-
-
-        //if (currentPlayer.Type != PlayerType.AI && !isAIWorking) return;
-        //AI.PerformAIMove(ref GameBoard);
-
+        
 
     }
 	
@@ -101,6 +95,8 @@ public class GameController : MonoBehaviour
             //End Game
             GameEnd(checker);
         }
+
+        //CheckforAI();
     }
 
     public void ClickMenuOption(string opt)
@@ -127,14 +123,14 @@ public class GameController : MonoBehaviour
                 p1.Index = PlayerIndex.PLAYER1;
                 p2.Icon = BoardOption.O;
                 p2.Index = PlayerIndex.PLAYER2;
-                GameSetup(p1, p2);
+                GameSetup();
                 break;
             case "O":
                 p2.Icon = BoardOption.X;
                 p2.Index = PlayerIndex.PLAYER1;
                 p1.Icon = BoardOption.O;
                 p1.Index = PlayerIndex.PLAYER2;
-                GameSetup(p1, p2);
+                GameSetup();
                 break;
             case "RETRY":
                 p1 = new Player();
@@ -148,6 +144,21 @@ public class GameController : MonoBehaviour
     }
 
     //private
+    private void CheckforAI()
+    {
+        //AICode
+        if (currentPlayer.Type == PlayerType.AI)
+        {
+            Move AIMove = AI.PerformAIMove(ref GameBoard);
+            if (GameBoard.PlaceMove(AIMove.x, AIMove.y, currentPlayer.Icon))
+                ModifyOptionView(AIMove.x, AIMove.y, currentPlayer.Icon);
+            else
+                Debug.Log("FATAL ERROR: Something went wrong with AICode in Game Controller Update");
+
+            currentPlayer = (currentPlayer == p1) ? p2 : p1;
+        }
+    }
+
     private void ChangeMenu()
     {
         MenuFlow[currentMenuIndex++].gameObject.SetActive(false);
@@ -164,7 +175,7 @@ public class GameController : MonoBehaviour
 
     }
 
-    private void GameSetup(Player p1, Player p2)
+    private void GameSetup()
     { 
         //MenuFlow[currentMenuIndex+1].enabled = true;
         currentPlayer = new Player();
@@ -221,7 +232,7 @@ public class GameController : MonoBehaviour
         }
         else { Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class"); }
 
-        if (p1.Type != PlayerType.AI || p2.Type != PlayerType.AI)
+        if (p1.Type == PlayerType.AI || p2.Type == PlayerType.AI)
             AI = new MinimaxAI(p1,p2);
 
 
