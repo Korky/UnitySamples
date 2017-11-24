@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     //utils
     private GameState currentGameState;
     private MinimaxAI AI;
+    private bool isAIWorking = false;
 
 
     // Overrides
@@ -60,13 +61,20 @@ public class GameController : MonoBehaviour
         if (currentGameState != GameState.IN_PROGRESS ) return;
         
         //update Current Player Text
+        if(p1 == currentPlayer) {
+            string des = (currentPlayer.Type == PlayerType.AI) ? "CPU" : "Human";
+            CurrentPlayerText.text = "Player 1 - " + des;
+        }
+        else {
+            string des = (currentPlayer.Type == PlayerType.AI) ? "CPU" : "Human";
+            CurrentPlayerText.text = "Player 2 - " + des;
+        }
 
 
 
+        //if (currentPlayer.Type != PlayerType.AI && !isAIWorking) return;
+        //AI.PerformAIMove(ref GameBoard);
 
-        if (currentPlayer.Type != PlayerType.AI) return;
-
-        AI.PerformAIMove(ref GameBoard);
 
     }
 	
