@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
         {
             ModifyOptionView(x, y, currentPlayer.Icon);            
         }
-        currentPlayer = (currentPlayer.Index == PlayerIndex.PLAYER1) ? p2 : p1;
+        currentPlayer = (currentPlayer == p1) ? p2 : p1;
 
 
         GameOver checker = GameBoard.CheckGameOver();
@@ -105,8 +105,6 @@ public class GameController : MonoBehaviour
 
     public void ClickMenuOption(string opt)
     {
-        
-        
         switch (opt)
         {
             case "PVP":
@@ -185,6 +183,24 @@ public class GameController : MonoBehaviour
 
     private void GameEnd(GameOver winner)
     {
+        switch (winner)
+        {
+            case GameOver.P1:
+                if(p1.Index == PlayerIndex.PLAYER1)
+                    GameOverText.text = "Player 1 wins";
+                else
+                    GameOverText.text = "Player 2 wins";
+                break;
+            case GameOver.P2:
+                if (p1.Index == PlayerIndex.PLAYER2)
+                    GameOverText.text = "Player 1 wins";
+                else
+                    GameOverText.text = "Player 2 wins";
+                break;
+            case GameOver.TIE:
+                GameOverText.text = "Tie";
+                break;
+        }
         //MenuFlow[currentMenuIndex].enabled = false;
         ClearView();
         ChangeMenu();
