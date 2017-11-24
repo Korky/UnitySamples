@@ -12,6 +12,7 @@ namespace Models
         public PlayerIndex Index;
         public PlayerType Type;
         public BoardOption Icon;
+
     }
     public class Board
     {
@@ -36,14 +37,20 @@ namespace Models
             
         }
 
+        public void BacktrackMove(int x, int y)
+        {
+            currentPlayer = (BoardData[y, x] == BoardOption.X) ? PlayerIndex.PLAYER1 : PlayerIndex.PLAYER2;
+            BoardData[y, x] = BoardOption.NO_VAL;
+        }
+
         public bool PlaceMove(int x, int y, BoardOption opt)
         {
             
-            Debug.Log("Model Cord:" + x + ", " + y);
+            //Debug.Log("Model Cord:" + x + ", " + y);
             if (BoardData[y,x] == BoardOption.NO_VAL) {
                 BoardData[y, x] = opt;
                 currentPlayer = (opt == BoardOption.X)? PlayerIndex.PLAYER1:PlayerIndex.PLAYER2;
-                printBoardDebug();
+                //printBoardDebug();
                 
                 
                 return true;
@@ -117,9 +124,5 @@ namespace Models
 
         }
     }
-    public struct Move
-    {
-        int x,y;
-        double score;
-    }
+    
 }

@@ -7,27 +7,32 @@ using System.Collections.Generic;
 //Custom Libraries
 using Models;
 using Enums;
+using AI;
 
 public class GameController : MonoBehaviour
 {
     //views
     public Image[] GUIRef = new Image[9];
     public Image[,] GridRef = new Image[3, 3];
-    public Canvas[] MenuFlow = new Canvas[4]; 
+    public Canvas[] MenuFlow = new Canvas[4];
+    public Text GameOverText;
+    public Text CurrentPlayerText;
 
     //models
-    private List<Player> Players = new List<Player>(2);
+    private Player p1, p2;
     private Player currentPlayer;
     private Board GameBoard;
     private int currentMenuIndex;
 
     //utils
-    private Player p1, p2;
+    private GameState currentGameState;
+    private MinimaxAI AI;
 
 
     // Overrides
     void Awake()
     {
+        currentGameState = GameState.NOT_INIT;
         p1 = new Player();
         p2 = new Player();
         currentMenuIndex = 0;
@@ -50,6 +55,20 @@ public class GameController : MonoBehaviour
         //start Menu Flow
         MenuFlow[currentMenuIndex].gameObject.SetActive(true);
     }
+    void Update()
+    {
+        if (currentGameState != GameState.IN_PROGRESS ) return;
+        
+        //update Current Player Text
+
+
+
+
+        if (currentPlayer.Type != PlayerType.AI) return;
+
+        AI.PerformAIMove(ref GameBoard);
+
+    }
 	
     //public
     public void ClickOption(string cord)
@@ -64,7 +83,7 @@ public class GameController : MonoBehaviour
         {
             ModifyOptionView(x, y, currentPlayer.Icon);            
         }
-        currentPlayer = (currentPlayer.Index == PlayerIndex.PLAYER1) ? Players[1] : Players[0];
+        currentPlayer = (currentPlayer.Index == PlayerIndex.PLAYER1) ? p2 : p1;
 
 
         GameOver checker = GameBoard.CheckGameOver();
@@ -115,6 +134,7 @@ public class GameController : MonoBehaviour
                 p1 = new Player();
                 p2 = new Player();
                 ChangeMenu();
+                currentGameState = GameState.NOT_INIT;
                 break;
             default:
                 break;
@@ -139,12 +159,11 @@ public class GameController : MonoBehaviour
     }
 
     private void GameSetup(Player p1, Player p2)
-    {
-        Players.Add(p1);
-        Players.Add(p2);
+    { 
         //MenuFlow[currentMenuIndex+1].enabled = true;
         currentPlayer = new Player();
         //Initialiaze Game
+        currentGameState = GameState.INIT;
         GameInit();
     }
 
@@ -171,12 +190,16 @@ public class GameController : MonoBehaviour
 
 
         //finish Game Init
-        if (Players[0].Type != PlayerType.NULL || Players[1].Type != PlayerType.NULL)
-            currentPlayer = (Players[0].Index == PlayerIndex.PLAYER1) ? Players[0] : Players[1];
-        else
-            Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class");
+        if (p1.Type != PlayerType.NULL || p2.Type != PlayerType.NULL) { 
+            currentPlayer = (p1.Index == PlayerIndex.PLAYER1) ? p1 : p2;
+            currentGameState = GameState.IN_PROGRESS;
+            ChangeMenu();
+        }
+        else { Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class"); }
+
+        if (p1.Type != PlayerType.AI || p2.Type != PlayerType.AI)
+            AI = new MinimaxAI(p1,p2);
 
 
-        ChangeMenu();
     }
 }
