@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour
         }
 
 
-        CheckforAI();
+        
     }
 	
     //public
@@ -87,6 +87,8 @@ public class GameController : MonoBehaviour
         }
         currentPlayer = (currentPlayer == p1) ? p2 : p1;
 
+        //Check for AI here to avoid UNITY Crash $HACK$
+        CheckforAI();
 
         GameOver checker = GameBoard.CheckGameOver();
         Debug.Log(checker);
@@ -146,16 +148,15 @@ public class GameController : MonoBehaviour
     private void CheckforAI()
     {
         //AICode
-        if (currentPlayer.Type == PlayerType.AI)
-        {
-            Move AIMove = AI.PerformAIMove(ref GameBoard);
-            if (GameBoard.PlaceMove(AIMove.x, AIMove.y, currentPlayer.Icon))
-                ModifyOptionView(AIMove.x, AIMove.y, currentPlayer.Icon);
-            else
-                Debug.Log("FATAL ERROR: Something went wrong with AICode in Game Controller Update");
+        if (currentPlayer.Type != PlayerType.AI) return;
+        Move AIMove = AI.PerformAIMove(ref GameBoard);
+        if (GameBoard.PlaceMove(AIMove.x, AIMove.y, currentPlayer.Icon))
+            ModifyOptionView(AIMove.x, AIMove.y, currentPlayer.Icon);
+        else
+            Debug.Log("FATAL ERROR: Something went wrong with AICode in Game Controller Update");
 
-            currentPlayer = (currentPlayer == p1) ? p2 : p1;
-        }
+        currentPlayer = (currentPlayer == p1) ? p2 : p1;
+
     }
 
     private void ChangeMenu()
@@ -231,9 +232,13 @@ public class GameController : MonoBehaviour
         }
         else { Debug.Log("FATAL ERROR: Still Haven't Assigned Players in Game Model Class"); }
 
-        if (p1.Type == PlayerType.AI || p2.Type == PlayerType.AI)
+        if (p1.Type == PlayerType.AI || p2.Type == PlayerType.AI) {
             AI = new MinimaxAI(p1,p2);
-
-
+            //Check for AI here to avoid UNITY Crash $HACK$
+            if (p1.Type == PlayerType.AI && p1.Index == PlayerIndex.PLAYER1)
+                CheckforAI();
+            if (p2.Type == PlayerType.AI && p2.Index == PlayerIndex.PLAYER1)
+                CheckforAI();  
+        }
     }
 }

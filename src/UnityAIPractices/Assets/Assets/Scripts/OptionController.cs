@@ -12,7 +12,7 @@ public class OptionController : MonoBehaviour
 
     private Image Ref;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         Ref = GetComponent<Image>();
         GetComponent<Button>().targetGraphic = Ref;
