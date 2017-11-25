@@ -114,11 +114,6 @@ public class GameController : MonoBehaviour
                 p2.Type = PlayerType.AI;
                 ChangeMenu();
                 break;
-            case "EVE":
-                p1.Type = PlayerType.AI;
-                p2.Type = PlayerType.AI;
-                ChangeMenu();
-                break;
             case "X":
                 p1.Icon = BoardOption.X;
                 p1.Index = PlayerIndex.PLAYER1;
