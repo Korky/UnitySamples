@@ -95,8 +95,7 @@ public class GameController : MonoBehaviour
             //End Game
             GameEnd(checker);
         }
-
-        //CheckforAI();
+        CheckforAI();
     }
 
     public void ClickMenuOption(string opt)
