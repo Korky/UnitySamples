@@ -68,8 +68,8 @@ public class GameController : MonoBehaviour
             CurrentPlayerText.text = "Player 2 - " + des;
         }
 
-        
 
+        CheckforAI();
     }
 	
     //public
@@ -95,7 +95,7 @@ public class GameController : MonoBehaviour
             //End Game
             GameEnd(checker);
         }
-        CheckforAI();
+        
     }
 
     public void ClickMenuOption(string opt)

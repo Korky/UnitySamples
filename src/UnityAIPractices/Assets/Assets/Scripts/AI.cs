@@ -80,8 +80,9 @@ namespace AI {
                             AIMove = new Move(x, y, getBestMove(ref board, ai).score);
                         }
                         board.BacktrackMove(x, y);
+                        moves.Add(AIMove);
                     }
-                    moves.Add(AIMove);
+                    
                     
                 }
             }
