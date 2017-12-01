@@ -31,4 +31,16 @@
         X,
         O
     }
+    public enum WinnerStripeIndex
+    {
+        NULL=0,
+        VC,
+        VR,
+        VL,
+        HC,
+        HT,
+        HB,
+        DL,
+        DR
+    }
 }

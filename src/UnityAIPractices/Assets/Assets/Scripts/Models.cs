@@ -59,6 +59,26 @@ namespace Models
             return false;
         }
 
+        public WinnerStripeIndex GetWinMove()
+        {
+            BoardOption temp = (currentPlayer == PlayerIndex.PLAYER1) ? BoardOption.X : BoardOption.O;
+            //check rows
+            if (getBoardValue(0, 0) == temp && getBoardValue(0, 1) == temp && getBoardValue(0, 2) == temp) return WinnerStripeIndex.HT;
+            if (getBoardValue(1, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(1, 2) == temp) return WinnerStripeIndex.HC;
+            if (getBoardValue(2, 0) == temp && getBoardValue(2, 1) == temp && getBoardValue(2, 2) == temp) return WinnerStripeIndex.HB;
+
+            //check colums
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 0) == temp && getBoardValue(2, 0) == temp) return WinnerStripeIndex.VL;
+            if (getBoardValue(0, 1) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 1) == temp) return WinnerStripeIndex.VC;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 2) == temp && getBoardValue(2, 2) == temp) return WinnerStripeIndex.VR;
+
+            //check diagonals
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 2) == temp) return WinnerStripeIndex.DL;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 0) == temp) return WinnerStripeIndex.DR;
+
+            return WinnerStripeIndex.NULL;
+        }
+
         public GameOver CheckGameOver()
         {
             BoardOption temp;

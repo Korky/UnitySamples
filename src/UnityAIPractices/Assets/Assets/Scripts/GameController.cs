@@ -1,8 +1,6 @@
 ﻿//System Libraries
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 
 //Custom Libraries
 using Models;
@@ -17,6 +15,7 @@ public class GameController : MonoBehaviour
     public Canvas[] MenuFlow = new Canvas[4];
     public Text GameOverText;
     public Text CurrentPlayerText;
+    public Image WinnerStripe;
 
     //models
     private Player p1, p2;
@@ -27,6 +26,7 @@ public class GameController : MonoBehaviour
     //utils
     private GameState currentGameState;
     private MinimaxAI AI;
+    private Animator anim;
 
     // Overrides
     void Awake()
@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     }
 	void Start ()
     {
+        anim = WinnerStripe.GetComponent<Animator>();
 
         //Setup UI Pointers
         GridRef[0, 0] = GUIRef[0];
@@ -56,10 +57,26 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("ShowWinner"))
+        {
+            if (stateInfo.normalizedTime >= 1) GoToFinalScreen();
+        }
+
         if (currentGameState != GameState.IN_PROGRESS ) return;
-        
+
+        //check for winner
+        GameOver checker = GameBoard.CheckGameOver();
+        Debug.Log(checker);
+        if (checker != GameOver.IDLE)
+        {
+            //End Game
+            currentGameState = GameState.GAMEOVER;
+            GameEnd(checker);
+        }
+
         //update Current Player Text
-        if(p1 == currentPlayer) {
+        if (p1 == currentPlayer) {
             string des = (currentPlayer.Type == PlayerType.AI) ? "CPU" : "Human";
             CurrentPlayerText.text = "Player 1 - " + des;
         }
@@ -68,8 +85,9 @@ public class GameController : MonoBehaviour
             CurrentPlayerText.text = "Player 2 - " + des;
         }
 
-
         
+        
+
     }
 	
     //public
@@ -87,17 +105,10 @@ public class GameController : MonoBehaviour
         }
         currentPlayer = (currentPlayer == p1) ? p2 : p1;
 
+
         //Check for AI here to avoid UNITY Crash $HACK$
         CheckforAI();
 
-        GameOver checker = GameBoard.CheckGameOver();
-        Debug.Log(checker);
-        if(checker != GameOver.IDLE)
-        {
-            //End Game
-            GameEnd(checker);
-        }
-        
     }
 
     public void ClickMenuOption(string opt)
@@ -151,7 +162,7 @@ public class GameController : MonoBehaviour
             Debug.Log("FATAL ERROR: Something went wrong with AICode in Game Controller Update");
 
         currentPlayer = (currentPlayer == p1) ? p2 : p1;
-
+        
     }
 
     private void ChangeMenu()
@@ -187,27 +198,84 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void wait(int sec)
+    {
+        //Do whatever you need done here before waiting
+
+        System.Threading.Thread.Sleep(sec*1000);
+
+        //do stuff after the 2 seconds
+    }
+
     private void GameEnd(GameOver winner)
     {
+
         switch (winner)
         {
             case GameOver.P1:
                 if(p1.Index == PlayerIndex.PLAYER1)
-                    GameOverText.text = "Player 1 wins";
+                    CurrentPlayerText.text = GameOverText.text = "Player 1 wins";
                 else
-                    GameOverText.text = "Player 2 wins";
+                    CurrentPlayerText.text = GameOverText.text = "Player 2 wins";
                 break;
             case GameOver.P2:
                 if (p1.Index == PlayerIndex.PLAYER2)
-                    GameOverText.text = "Player 1 wins";
+                    CurrentPlayerText.text = GameOverText.text = "Player 1 wins";
                 else
-                    GameOverText.text = "Player 2 wins";
+                    CurrentPlayerText.text = GameOverText.text = "Player 2 wins";
                 break;
             case GameOver.TIE:
                 GameOverText.text = "Tie";
                 break;
         }
+
+        if (winner != GameOver.TIE)
+        {
+
+            switch (GameBoard.GetWinMove()) {
+
+                case WinnerStripeIndex.VC:
+                    WinnerStripe.transform.Rotate(new Vector3(0, 0, 90));
+                    break;
+                case WinnerStripeIndex.VL:
+                    WinnerStripe.GetComponent<Transform>().localPosition = new Vector3(-135, 0, 0);
+                    WinnerStripe.transform.Rotate(new Vector3(0, 0, 90));
+                    break;
+                case WinnerStripeIndex.VR:
+                    WinnerStripe.GetComponent<Transform>().localPosition = new Vector3(140, 0, 0);
+                    WinnerStripe.transform.Rotate(new Vector3(0, 0, 90));
+                    break;
+                case WinnerStripeIndex.HC:
+                    break;
+                case WinnerStripeIndex.HT:
+                    WinnerStripe.GetComponent<Transform>().localPosition = new Vector3(0,100,0);
+                    break;
+                case WinnerStripeIndex.HB:
+                    WinnerStripe.GetComponent<Transform>().localPosition = new Vector3(0, -100, 0);
+                    break;
+                case WinnerStripeIndex.DL:
+                    WinnerStripe.transform.Rotate(new Vector3(0, 0, -35));
+                    break;
+                case WinnerStripeIndex.DR:
+                    WinnerStripe.transform.Rotate(new Vector3(0, 0, 35));
+                    break;
+
+            }
+            anim.SetTrigger("Show");
+        }
+            
+        else
+            GoToFinalScreen();
         //MenuFlow[currentMenuIndex].enabled = false;
+
+        
+    }
+
+    private void GoToFinalScreen()
+    {
+        WinnerStripe.GetComponent<Transform>().localPosition = new Vector3(0, 0, 0);
+        WinnerStripe.GetComponent<Transform>().localEulerAngles = new Vector3(0, 0, 90);
+        anim.SetTrigger("Reset");
         ClearView();
         ChangeMenu();
     }
