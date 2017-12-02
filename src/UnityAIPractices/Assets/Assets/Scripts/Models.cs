@@ -1,7 +1,4 @@
-﻿//System libraries
-using UnityEngine;
-
-//Custom libraries
+﻿//Custom libraries
 using Enums;
 
 namespace Models
@@ -128,21 +125,7 @@ namespace Models
             return GameState.GAMEOVER;
         }
 
-        private void printBoardDebug()
-        {
-            string[] p = new string[3];
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 0; x < 3; x++)
-                {
-                    int t = (int)BoardData[x, y];
-                    p[x] = t.ToString();
-
-                }
-                Debug.Log(string.Join("\t", p)+"\n");
-            }
-
-        }
+        
     }
     
 }
