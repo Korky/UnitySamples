@@ -57,6 +57,7 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
+        //check when winning animation is done
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("ShowWinner"))
         {
@@ -72,7 +73,7 @@ public class GameController : MonoBehaviour
         {
             //End Game
             currentGameState = GameState.GAMEOVER;
-            GameEnd(checker);
+            GameEnd(ref checker);
         }
 
         //update Current Player Text
@@ -207,7 +208,7 @@ public class GameController : MonoBehaviour
         //do stuff after the 2 seconds
     }
 
-    private void GameEnd(GameOver winner)
+    private void GameEnd(ref GameOver winner)
     {
 
         switch (winner)
@@ -308,7 +309,7 @@ public class GameController : MonoBehaviour
 
 public class GameDebug
 {
-    public void printBoardDebug(Board theBoard)
+    public void printBoardDebug(ref Board theBoard)
     {
         string[] p = new string[3];
         for (int y = 0; y < 3; y++)
