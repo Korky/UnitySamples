@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Models;
-using Enums;
+using GameConsts;
 
 namespace AI {
     public struct Move
@@ -31,25 +31,24 @@ namespace AI {
         }
         public Move PerformAIMove(ref Board board)
         {
-            //TODO
             return getBestMove(ref board,ai);
         }
         private Move getBestMove(ref Board board,Player player)
         {
             //base case
-            GameOver cond = board.CheckGameOver();
-            if(cond == GameOver.P1)
+            int cond = board.CheckGameOver();
+            if(cond == GameOver.PLAYER1)
             {
-                if(ai.Index == PlayerIndex.PLAYER1){
+                if(ai.Index == 1){
                     return new Move(10);
                 }
                 else{
                     return new Move(-10);
                 }
             }
-            else if (cond == GameOver.P2)
+            else if (cond == GameOver.PLAYER2)
             {
-                if (ai.Index == PlayerIndex.PLAYER2)
+                if (ai.Index == 2 )
                 {
                     return new Move(10);
                 }

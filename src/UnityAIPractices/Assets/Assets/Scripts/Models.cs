@@ -1,12 +1,13 @@
 ﻿//Custom libraries
 using Enums;
+using GameConsts;
 
 namespace Models
 {
     
     public class Player
     {
-        public PlayerIndex Index;
+        public int Index;
         public PlayerType Type;
         public BoardOption Icon;
 
@@ -76,29 +77,29 @@ namespace Models
             return WinnerStripeIndex.NULL;
         }
 
-        public GameOver CheckGameOver()
+        public int CheckGameOver()
         {
             BoardOption temp;
             temp =(currentPlayer == PlayerIndex.PLAYER1)?BoardOption.X:BoardOption.O;
             
             //check rows
-            if (getBoardValue(0, 0) == temp && getBoardValue(0, 1) == temp && getBoardValue(0, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
-            if (getBoardValue(1, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(1, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
-            if (getBoardValue(2, 0) == temp && getBoardValue(2, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 0) == temp && getBoardValue(0, 1) == temp && getBoardValue(0, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
+            if (getBoardValue(1, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(1, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
+            if (getBoardValue(2, 0) == temp && getBoardValue(2, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
 
             //check colums
-            if (getBoardValue(0, 0) == temp && getBoardValue(1, 0) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
-            if (getBoardValue(0, 1) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 1) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
-            if (getBoardValue(0, 2) == temp && getBoardValue(1, 2) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 0) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
+            if (getBoardValue(0, 1) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 1) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 2) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
 
             //check diagonals
-            if (getBoardValue(0, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
-            if (getBoardValue(0, 2) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.P1 : GameOver.P2;
+            if (getBoardValue(0, 0) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 2) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
+            if (getBoardValue(0, 2) == temp && getBoardValue(1, 1) == temp && getBoardValue(2, 0) == temp) return (currentPlayer == PlayerIndex.PLAYER1) ? GameOver.PLAYER1 : GameOver.PLAYER2;
 
 
             if (checkForEmpty() == GameState.GAMEOVER) return GameOver.TIE;
 
-            return GameOver.IDLE;
+            return GameOver.NO_VAL;
         }
 
         //private

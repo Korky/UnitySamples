@@ -18,13 +18,13 @@
         IN_PROGRESS,
         GAMEOVER
     }
-    public enum GameOver
+   /* public enum GameOver
     {
         IDLE = 0,
         P1,
         P2,
         TIE
-    }
+    }*/
     public enum BoardOption
     {
         NO_VAL = 0,

@@ -5,7 +5,9 @@ using UnityEngine.UI;
 //Custom Libraries
 using Models;
 using Enums;
+using GameConsts;
 using AI;
+
 
 public class GameController : MonoBehaviour
 {
@@ -67,13 +69,13 @@ public class GameController : MonoBehaviour
         if (currentGameState != GameState.IN_PROGRESS ) return;
 
         //check for winner
-        GameOver checker = GameBoard.CheckGameOver();
+        int checker = GameBoard.CheckGameOver();
         Debug.Log(checker);
-        if (checker != GameOver.IDLE)
+        if (checker != GameOver.NO_VAL)
         {
             //End Game
             currentGameState = GameState.GAMEOVER;
-            GameEnd(ref checker);
+            GameEnd(checker);
         }
 
         //update Current Player Text
@@ -128,16 +130,16 @@ public class GameController : MonoBehaviour
                 break;
             case "X":
                 p1.Icon = BoardOption.X;
-                p1.Index = PlayerIndex.PLAYER1;
+                p1.Index = 1;
                 p2.Icon = BoardOption.O;
-                p2.Index = PlayerIndex.PLAYER2;
+                p2.Index = 2;
                 GameSetup();
                 break;
             case "O":
                 p2.Icon = BoardOption.X;
-                p2.Index = PlayerIndex.PLAYER1;
+                p2.Index = 1;
                 p1.Icon = BoardOption.O;
-                p1.Index = PlayerIndex.PLAYER2;
+                p1.Index = 2;
                 GameSetup();
                 break;
             case "RETRY":
@@ -208,19 +210,19 @@ public class GameController : MonoBehaviour
         //do stuff after the 2 seconds
     }
 
-    private void GameEnd(ref GameOver winner)
+    private void GameEnd(int winner)
     {
 
         switch (winner)
         {
-            case GameOver.P1:
-                if(p1.Index == PlayerIndex.PLAYER1)
+            case GameOver.PLAYER1:
+                if(p1.Index == 1)
                     CurrentPlayerText.text = GameOverText.text = "Player 1 wins";
                 else
                     CurrentPlayerText.text = GameOverText.text = "Player 2 wins";
                 break;
-            case GameOver.P2:
-                if (p1.Index == PlayerIndex.PLAYER2)
+            case GameOver.PLAYER2:
+                if (p1.Index == 2)
                     CurrentPlayerText.text = GameOverText.text = "Player 1 wins";
                 else
                     CurrentPlayerText.text = GameOverText.text = "Player 2 wins";
@@ -290,7 +292,7 @@ public class GameController : MonoBehaviour
 
         //finish Game Init
         if (p1.Type != PlayerType.NULL || p2.Type != PlayerType.NULL) { 
-            currentPlayer = (p1.Index == PlayerIndex.PLAYER1) ? p1 : p2;
+            currentPlayer = (p1.Index == 1) ? p1 : p2;
             currentGameState = GameState.IN_PROGRESS;
             ChangeMenu();
         }
@@ -299,9 +301,9 @@ public class GameController : MonoBehaviour
         if (p1.Type == PlayerType.AI || p2.Type == PlayerType.AI) {
             AI = new MinimaxAI(p1,p2);
             //Check for AI here to avoid UNITY Crash $HACK$
-            if (p1.Type == PlayerType.AI && p1.Index == PlayerIndex.PLAYER1)
+            if (p1.Type == PlayerType.AI && p1.Index == 1)
                 CheckforAI();
-            if (p2.Type == PlayerType.AI && p2.Index == PlayerIndex.PLAYER1)
+            if (p2.Type == PlayerType.AI && p2.Index == 1)
                 CheckforAI();  
         }
     }
